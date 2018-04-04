@@ -1,4 +1,5 @@
 {
-    "editor.formatOnSave": false,
-    "react.beautify.onSave": true
+    "editor.formatOnSave": true,
+    "react.beautify.onSave": true,
+    "editor.formatOnPaste": false,
 }
