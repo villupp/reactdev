@@ -42,12 +42,10 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            history: [
-                {
-                    squares: Array(9).fill(null),
-                    lastMove: null
-                }
-            ],
+            history: [{
+                squares: Array(9).fill(null),
+                lastMove: null
+            }],
             stepNumber: 0,
             xIsNext: true
         };
@@ -74,12 +72,10 @@ class Game extends React.Component {
             ? 'X'
             : 'O';
         this.setState({
-            history: history.concat([
-                {
-                    squares: squares,
-                    lastMove: lastMove
-                }
-            ]),
+            history: history.concat([{
+                squares: squares,
+                lastMove: lastMove
+            }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
@@ -93,12 +89,12 @@ class Game extends React.Component {
     }
 
     isCurrent(move) {
-        if (move === this.state.stepNumber) 
+        if (move === this.state.stepNumber)
             return 'active';
-        else 
+        else
             return '';
-        }
-    
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -125,9 +121,9 @@ class Game extends React.Component {
                 ? 'X'
                 : 'O');
         }
-        if (current.lastMove != null) 
+        if (current.lastMove != null)
             lastMove += 'Last move: col: ' + current.lastMove.col + ', row: ' + current.lastMove.row;
-        
+
         return (
             <div className="game">
                 <div className="game-board">
@@ -150,36 +146,24 @@ ReactDOM.render(
 
 function calculateWinner(squares) {
     const lines = [
-        [
-            0, 1, 2
-        ],
-        [
-            3, 4, 5
-        ],
-        [
-            6, 7, 8
-        ],
-        [
-            0, 3, 6
-        ],
-        [
-            1, 4, 7
-        ],
-        [
-            2, 5, 8
-        ],
-        [
-            0, 4, 8
-        ],
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
         [2, 4, 6]
     ];
+
     for (let i = 0; i < lines.length; i++) {
-        const [a,
-            b,
-            c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        const [a, b, c] = lines[i];
+        if (squares[a] &&
+            squares[a] === squares[b] &&
+            squares[a] === squares[c]) {
             return squares[a];
         }
     }
+
     return null;
 }
