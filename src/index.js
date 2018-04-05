@@ -16,16 +16,6 @@ class Board extends React.Component {
     }
 
     render() {
-        const winner = calculateWinner(this.props.squares);
-        let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.props.xIsNext
-                ? 'X'
-                : 'O');
-        }
-
         return (
             <div>
                 <div className="board-row">
@@ -54,7 +44,8 @@ class Game extends React.Component {
         this.state = {
             history: [
                 {
-                    squares: Array(9).fill(null)
+                    squares: Array(9).fill(null),
+                    lastMove: null
                 }
             ],
             stepNumber: 0,
@@ -71,6 +62,11 @@ class Game extends React.Component {
         const squares = current
             .squares
             .slice();
+        const lastMove = {
+            col: i % 3 + 1,
+            row: Math.trunc(i / 3) + 1
+        };
+
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -80,7 +76,8 @@ class Game extends React.Component {
         this.setState({
             history: history.concat([
                 {
-                    squares: squares
+                    squares: squares,
+                    lastMove: lastMove
                 }
             ]),
             stepNumber: history.length,
@@ -96,7 +93,7 @@ class Game extends React.Component {
     }
 
     render() {
-        const history = this.state.history; // com112ment2
+        const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
@@ -112,6 +109,7 @@ class Game extends React.Component {
         });
 
         let status;
+        let lastMove = '';
         if (winner) {
             status = 'Winner: ' + winner;
         } else {
@@ -119,7 +117,9 @@ class Game extends React.Component {
                 ? 'X'
                 : 'O');
         }
-
+        if (current.lastMove != null) 
+            lastMove += 'Last move: col: ' + current.lastMove.col + ', row: ' + current.lastMove.row;
+        
         return (
             <div className="game">
                 <div className="game-board">
@@ -127,6 +127,7 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <div>{lastMove}</div>
                     <ol>{moves}</ol>
                 </div>
             </div>
