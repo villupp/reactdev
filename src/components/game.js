@@ -70,6 +70,18 @@ export default class Game extends React.Component {
         return true;
     }
 
+    restartGame() {
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+                lastMove: null
+            }],
+            moveHistoryOrder: true,
+            stepNumber: 0,
+            xIsNext: true
+        });
+    }
+
     render() {
         let history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -110,6 +122,12 @@ export default class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <hr/>
+                    <div>
+                        <button onClick={() => this.restartGame()}>
+                            Restart game
+                        </button>
+                    </div>
                     <hr/>
                     <div>{lastMove}</div>
                     <div>
