@@ -79,14 +79,14 @@ class Game extends React.Component {
         squares[i] = this.state.xIsNext
             ? 'X'
             : 'O';
-        this.setState({
+        this.setState(prevState => ({
             history: history.concat([{
                 squares: squares,
                 lastMove: lastMove
             }]),
             stepNumber: history.length,
-            xIsNext: !this.state.xIsNext
-        });
+            xIsNext: !prevState.xIsNext
+        }));
     }
 
     jumpTo(step) {
@@ -104,9 +104,9 @@ class Game extends React.Component {
     }
 
     switchMoveSortOrder() {
-        this.setState({
-            moveHistoryOrder: !this.state.moveHistoryOrder
-        });
+        this.setState(prevState => ({
+            moveHistoryOrder: !prevState.moveHistoryOrder
+        }));
     }
 
     isDraw() {
