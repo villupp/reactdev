@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className={'square' + props.cssClasses} onClick={props.onClick}>
             {props.value}
         </button>
     );
@@ -12,7 +12,12 @@ function Square(props) {
 
 class Board extends React.Component {
     renderSquare(i) {
-        return (<Square value={this.props.squares[i]} key={i} onClick={() => this.props.onClick(i)}/>);
+        let cssClasses = '';
+
+        if (this.props.winnerRow && this.props.winnerRow.indexOf(i) != -1)
+            cssClasses += ' win';
+
+        return (<Square value={this.props.squares[i]} cssClasses={cssClasses} key={i} onClick={() => this.props.onClick(i)}/>);
     }
 
     renderBoardRow(i) {
@@ -22,7 +27,7 @@ class Board extends React.Component {
         }
 
         return (
-            <div className="board-row">
+            <div key={i} className="board-row">
                 {squareNumbers.map((squareNumber, arrIndex) => {
                     return this.renderSquare(squareNumber);
                 })}
@@ -106,7 +111,7 @@ class Game extends React.Component {
     render() {
         let history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+        const winnerRow = calculateWinner(current.squares);
 
         let moves = history.map((step, move) => {
             let desc = move
@@ -126,12 +131,10 @@ class Game extends React.Component {
 
         let status;
         let lastMove = '';
-        if (winner) {
-            status = 'Winner: ' + winner;
+        if (winnerRow) {
+            status = 'Winner: ' + current.squares[winnerRow[0]];
         } else {
-            status = 'Next player: ' + (this.state.xIsNext
-                ? 'X'
-                : 'O');
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
         if (current.lastMove != null)
             lastMove += 'Last move: col: ' + current.lastMove.col + ', row: ' + current.lastMove.row;
@@ -139,7 +142,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board squares={current.squares} onClick={(i) => this.handleClick(i)}/>
+                    <Board squares={current.squares} winnerRow={winnerRow} onClick={(i) => this.handleClick(i)}/>
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
@@ -181,7 +184,7 @@ function calculateWinner(squares) {
         if (squares[a] &&
             squares[a] === squares[b] &&
             squares[a] === squares[c]) {
-            return squares[a];
+            return [a, b, c];
         }
     }
 
