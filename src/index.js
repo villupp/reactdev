@@ -14,7 +14,7 @@ class Board extends React.Component {
     renderSquare(i) {
         let cssClasses = '';
 
-        if (this.props.winnerRow && this.props.winnerRow.indexOf(i) != -1)
+        if (this.props.winnerRow && this.props.winnerRow.indexOf(i) !== -1)
             cssClasses += ' win';
 
         return (<Square value={this.props.squares[i]} cssClasses={cssClasses} key={i} onClick={() => this.props.onClick(i)}/>);
@@ -75,6 +75,7 @@ class Game extends React.Component {
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
+
         squares[i] = this.state.xIsNext
             ? 'X'
             : 'O';
@@ -108,6 +109,15 @@ class Game extends React.Component {
         });
     }
 
+    isDraw() {
+        var currentSquares = this.state.history[this.state.stepNumber].squares;
+
+        for (let squareVal of currentSquares) {
+            if (squareVal === null) return false;
+        }
+        return true;
+    }
+
     render() {
         let history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -133,6 +143,8 @@ class Game extends React.Component {
         let lastMove = '';
         if (winnerRow) {
             status = 'Winner: ' + current.squares[winnerRow[0]];
+        } else if (this.isDraw()) {
+            status = 'Draw';
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
