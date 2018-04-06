@@ -1,11 +1,12 @@
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
+    font: 14px 'Tahoma', sans-serif;
     margin: 20px;
+    text-align: center;
 }
 
-ol,
-ul {
-    padding-left: 30px;
+button {
+    margin-top: 3px;
+    width: 160px;
 }
 
 .board-row:after {
@@ -50,6 +51,6 @@ ul {
     margin-left: 20px;
 }
 
-li.active {
+div.active>button {
     font-weight: bold;
 }
