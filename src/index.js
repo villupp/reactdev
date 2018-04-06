@@ -17,7 +17,7 @@ class Board extends React.Component {
         if (this.props.winnerRow && this.props.winnerRow.indexOf(i) !== -1)
             cssClasses += ' win';
 
-        return (<Square value={this.props.squares[i]} cssClasses={cssClasses} key={i} onClick={() => this.props.onClick(i)}/>);
+        return (<Square value={this.props.squares[i]} cssClasses={cssClasses} key={i} onClick={() => this.props.onClick(i)} />);
     }
 
     renderBoardRow(i) {
@@ -154,11 +154,11 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board squares={current.squares} winnerRow={winnerRow} onClick={(i) => this.handleClick(i)}/>
+                    <Board squares={current.squares} winnerRow={winnerRow} onClick={(i) => this.handleClick(i)} />
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <hr/>
+                    <hr />
                     <div>{lastMove}</div>
                     <div>
                         <button onClick={() => this.switchMoveSortOrder()}>
@@ -177,7 +177,7 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-    <Game/>, document.getElementById('root'));
+    <Game />, document.getElementById('root'));
 
 function calculateWinner(squares) {
     const lines = [
