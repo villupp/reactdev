@@ -18,7 +18,6 @@ class Board extends React.Component {
     renderBoardRow(i) {
         var squareNumbers = Array(3);
         for (var j = 0; j < 3; j++) {
-            console.log(`i: ${i}, j: ${j}, square number: ${(i + j)}`);
             squareNumbers[j] = i + j;
         }
 
@@ -53,20 +52,16 @@ class Game extends React.Component {
                 squares: Array(9).fill(null),
                 lastMove: null
             }],
+            moveHistoryOrder: true,
             stepNumber: 0,
             xIsNext: true
         };
     }
 
     handleClick(i) {
-        const history = this
-            .state
-            .history
-            .slice(0, this.state.stepNumber + 1);
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
-        const squares = current
-            .squares
-            .slice();
+        const squares = current.squares.slice();
         const lastMove = {
             col: i % 3 + 1,
             row: Math.trunc(i / 3) + 1
@@ -102,22 +97,32 @@ class Game extends React.Component {
             return '';
     }
 
+    switchMoveSortOrder() {
+        this.setState({
+            moveHistoryOrder: !this.state.moveHistoryOrder
+        });
+    }
+
     render() {
-        const history = this.state.history;
+        let history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
-        const moves = history.map((step, move) => {
+        let moves = history.map((step, move) => {
             let desc = move
-                ? 'Go to move #' + move
-                : 'Go to game start';
+                ? 'Move #' + move
+                : 'Game start';
 
             return (
-                <li className={this.isCurrent(move)} key={move}>
+                <div className={this.isCurrent(move)} key={move}>
                     <button onClick={() => this.jumpTo(move)}>{desc}</button>
-                </li>
+                </div>
             );
         });
+
+        if (!this.state.moveHistoryOrder) {
+            moves = moves.reverse();
+        }
 
         let status;
         let lastMove = '';
@@ -138,8 +143,16 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <hr/>
                     <div>{lastMove}</div>
-                    <ol>{moves}</ol>
+                    <div>
+                        <button onClick={() => this.switchMoveSortOrder()}>
+                            Switch history order
+                        </button>
+                    </div>
+                    <hr />
+                    <b>Move History</b>
+                    <div>{moves}</div>
                 </div>
             </div>
         );
