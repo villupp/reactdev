@@ -6,6 +6,8 @@ export default class Board extends React.Component {
 
         if (this.props.winnerRow && this.props.winnerRow.indexOf(i) !== -1)
             cssClasses += ' win';
+        else if (this.props.squares[i] != null)
+            cssClasses += ' set';
 
         return (<Square value={this.props.squares[i]} cssClasses={cssClasses} key={i} onClick={() => this.props.onClick(i)}/>);
     }

@@ -38,6 +38,16 @@ button {
     background: rgba(255, 255, 0, .5);
 }
 
+.square.win:hover {
+    background: rgba(255, 255, 0, .5);
+    cursor: default;
+}
+
+.square.set:hover {
+    cursor: default;
+    background: none;
+}
+
 .square:hover {
     cursor: pointer;
     background: rgba(0, 0, 255, 0.11);
