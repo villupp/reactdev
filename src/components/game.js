@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './board';
+import Service from '../service';
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -15,7 +16,15 @@ export default class Game extends React.Component {
         };
     }
 
+    getRepo() {
+        let service = new Service();
+        service.getRepo().then((result) => {
+            console.log(JSON.stringify(result));
+        });
+    }
+
     handleClick(i) {
+        this.getRepo();
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
