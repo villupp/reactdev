@@ -1,8 +1,10 @@
 import React from 'react';
+import CommitList from './commitlist';
 
 export default class RepoInfo extends React.Component {
     render() {
         const repo = this.props.repo;
+        const commits = this.props.commits;
 
         if (repo != null) {
             return (
@@ -11,6 +13,9 @@ export default class RepoInfo extends React.Component {
                     <div>ID: {repo.id}</div>
                     <div>URL: <a href={repo.url}>{repo.url}</a></div>
                     <div>Description: {repo.description != null ? repo.description : ''}</div>
+                    <div>
+                        <CommitList commits={commits} />
+                    </div>
                 </div>
             );
         } else {

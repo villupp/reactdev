@@ -8,7 +8,8 @@ export default class RepoViewer extends React.Component {
         super(props);
         this.state = {
             repoName: '',
-            repo: null
+            repo: null,
+            commits: null
         };
         this.searchTimeout = null;
         this.onRepoNameChange = this.onRepoNameChange.bind(this);
@@ -31,6 +32,12 @@ export default class RepoViewer extends React.Component {
                     this.setState({
                         repo: repo
                     });
+                    return service.getCommits(repo.full_name);
+                })
+                .then((commits) => {
+                    this.setState({
+                        commits: commits
+                    });
                 })
                 .catch((err) => {
                     console.error(err.message);
@@ -47,13 +54,12 @@ export default class RepoViewer extends React.Component {
 
     render() {
         const repo = this.state.repo;
-        const loading = this.searchTimeout;
+        const commits = this.state.commits;
 
         return (
             <div className="repo-viewer">
                 <SimpleTextInputField label="Repository name: " onChange={this.onRepoNameChange}/>
-                <p>{loading ? 'loading' : ''}</p>
-                <RepoInfo repo={repo} />
+                <RepoInfo repo={repo} commits={commits} />
             </div>
         );
     }
