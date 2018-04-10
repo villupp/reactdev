@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Game from './components/game';
+import RepoViewer from './components/repoviewer';
 import './index.css';
 
 ReactDOM.render(
-    <Game/>, document.getElementById('root'));
+    <RepoViewer/>, document.getElementById('root'));
