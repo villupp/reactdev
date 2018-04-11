@@ -7,8 +7,8 @@ const mock = true;
 
 export default class Service {
     getRepo(repoFullName) {
-        console.log('getrepo ' + repoFullName);
         const relUrl = `/repos/${repoFullName}?client_id=${CLIENT_ID}&client_secret=${KEY}`;
+
         if (mock) {
             var id = Math.random().toString();
             id = id.substring(2, id.length - 1);
@@ -22,7 +22,7 @@ export default class Service {
             });
         } else {
             return new Promise((resolve, reject) => {
-                doRequest('GET', relUrl,
+                httpRequest('GET', relUrl,
                     function res(res) {
                         resolve(res);
                     },
@@ -36,8 +36,8 @@ export default class Service {
     }
 
     getCommits(repoFullName) {
-        console.log('getCommits ' + repoFullName);
         const relUrl = `/repos/${repoFullName}/commits?client_id=${CLIENT_ID}&client_secret=${KEY}`;
+
         if (mock) {
             return new Promise((resolve, reject) => {
                 resolve([{
@@ -134,7 +134,7 @@ export default class Service {
             });
         } else {
             return new Promise((resolve, reject) => {
-                doRequest('GET', relUrl,
+                httpRequest('GET', relUrl,
                     function res(res) {
                         resolve(res);
                     },
@@ -148,7 +148,7 @@ export default class Service {
     }
 }
 
-function doRequest(method, relativeUrl, onSuccess, onError, headers = {}) {
+function httpRequest(method, relativeUrl, onSuccess, onError, headers = {}) {
     const defaultHeaders = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
