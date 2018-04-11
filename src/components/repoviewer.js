@@ -58,7 +58,8 @@ export default class RepoViewer extends React.Component {
 
         return (
             <div className="repo-viewer">
-                <SimpleTextInputField label="Repository name: " onChange={this.onRepoNameChange}/>
+                <SimpleTextInputField label="Repository name: " onChange={this.onRepoNameChange} />
+                <hr/>
                 <RepoInfo repo={repo} commits={commits} />
             </div>
         );

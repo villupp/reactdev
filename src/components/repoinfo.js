@@ -13,9 +13,8 @@ export default class RepoInfo extends React.Component {
                     <div>ID: {repo.id}</div>
                     <div>URL: <a href={repo.url}>{repo.url}</a></div>
                     <div>Description: {repo.description != null ? repo.description : ''}</div>
-                    <div>
-                        <CommitList commits={commits} />
-                    </div>
+                    <hr/>
+                    <CommitList commits={commits} />
                 </div>
             );
         } else {
