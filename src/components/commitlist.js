@@ -7,13 +7,13 @@ export default class CommitList extends React.Component {
 
         if (this.props.commits != null) {
             commits = this.props.commits.map((commit) => {
-                return (<CommitListItem commit={commit} />);
+                return (<CommitListItem key={commit.sha} commit={commit} />);
             });
         }
 
         if (commits.length > 0) {
             return (
-                <div classname="commit-list">
+                <div className="commit-list">
                     {commits}
                 </div>
             );
