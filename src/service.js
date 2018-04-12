@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 const URL_BASE = 'https://api.github.com';
 const CLIENT_ID = 'ffd682caab6b6c6b8ffe';
 const KEY = '';
@@ -21,17 +19,11 @@ export default class Service {
                 });
             });
         } else {
-            return new Promise((resolve, reject) => {
-                httpRequest('GET', relUrl,
-                    function res(res) {
-                        resolve(res);
-                    },
-                    function(err) {
-                        console.error(JSON.stringify(err));
-                        reject(err);
-                    }
-                );
-            });
+            return getFetch(relUrl)
+                .then((res) => {
+                    console.log(`getRepo | Got response: ${(res.ok ? 'OK' : 'NOT OK')}, status ${res.status}: ${res.statusText}`);
+                    return res.json();
+                });
         }
     }
 
@@ -41,7 +33,7 @@ export default class Service {
         if (mock) {
             return new Promise((resolve, reject) => {
                 resolve([{
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc1',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -51,7 +43,7 @@ export default class Service {
                         message: 'Nice commit'
                     }
                 }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc2',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -61,7 +53,7 @@ export default class Service {
                         message: 'Another commit'
                     }
                 }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc3',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -71,7 +63,27 @@ export default class Service {
                         message: 'Nice commit'
                     }
                 }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc4',
+                    commit: {
+                        author: {
+                            name: 'Ville Piirainen',
+                            email: 'ville.piirainen@cgi.com',
+                            date: '2018-04-10T16:29:09Z'
+                        },
+                        message: 'Nice commit'
+                    }
+                }, {
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc5',
+                    commit: {
+                        author: {
+                            name: 'Ville Piirainen',
+                            email: 'ville.piirainen@cgi.com',
+                            date: '2018-04-10T16:29:09Z'
+                        },
+                        message: 'Nice commit'
+                    }
+                }, {
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc6',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -91,7 +103,7 @@ export default class Service {
                         message: 'Nice commit'
                     }
                 }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc8',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -101,27 +113,7 @@ export default class Service {
                         message: 'Nice commit'
                     }
                 }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
-                    commit: {
-                        author: {
-                            name: 'Ville Piirainen',
-                            email: 'ville.piirainen@cgi.com',
-                            date: '2018-04-10T16:29:09Z'
-                        },
-                        message: 'Nice commit'
-                    }
-                }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
-                    commit: {
-                        author: {
-                            name: 'Ville Piirainen',
-                            email: 'ville.piirainen@cgi.com',
-                            date: '2018-04-10T16:29:09Z'
-                        },
-                        message: 'Nice commit'
-                    }
-                }, {
-                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc7',
+                    sha: '0b86ef4101ac90c79341f4eb94b2212ceac57dc9',
                     commit: {
                         author: {
                             name: 'Ville Piirainen',
@@ -133,22 +125,16 @@ export default class Service {
                 }]);
             });
         } else {
-            return new Promise((resolve, reject) => {
-                httpRequest('GET', relUrl,
-                    function res(res) {
-                        resolve(res);
-                    },
-                    function(err) {
-                        console.error(JSON.stringify(err));
-                        reject(err);
-                    }
-                );
-            });
+            return getFetch(relUrl)
+                .then((res) => {
+                    console.log(`getCommits | Got response: ${(res.ok ? 'OK' : 'NOT OK')}, status ${res.status}: ${res.statusText}`);
+                    return res.json();
+                });
         }
     }
 }
 
-function httpRequest(method, relativeUrl, onSuccess, onError, headers = {}) {
+function getFetch(relativeUrl, httpHeaders = {}) {
     const defaultHeaders = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -156,15 +142,16 @@ function httpRequest(method, relativeUrl, onSuccess, onError, headers = {}) {
 
     /* Add default headers */
     for (var header in defaultHeaders) {
-        if (!headers.hasOwnProperty(header))
-            headers[header] = defaultHeaders[header];
+        if (!httpHeaders.hasOwnProperty(header))
+            httpHeaders[header] = defaultHeaders[header];
     }
 
-    $.ajax({
-        method: method,
-        url: `${URL_BASE}${relativeUrl}`,
-        headers: headers,
-        success: onSuccess,
-        error: onError
-    });
+    var reqSettings = {
+        method: 'GET',
+        headers: new Headers(httpHeaders),
+        cache: 'default'
+    };
+
+    var req = new Request(`${URL_BASE}${relativeUrl}`, reqSettings);
+    return fetch(req);
 }

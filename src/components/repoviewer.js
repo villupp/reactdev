@@ -29,12 +29,14 @@ export default class RepoViewer extends React.Component {
             let service = new Service();
             service.getRepo(repoName)
                 .then((repo) => {
+                    console.log('Repo: ' + JSON.stringify(repo));
                     this.setState({
                         repo: repo
                     });
                     return service.getCommits(repo.full_name);
                 })
                 .then((commits) => {
+                    console.log('Commits: ' + JSON.stringify(commits));
                     this.setState({
                         commits: commits
                     });
